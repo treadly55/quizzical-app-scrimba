@@ -1,38 +1,306 @@
-.App {
+body{
+  background-color: #1e1e1e;
+  color: #fff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+main {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  border: none;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
+  max-width: 670px;
+  background-color: #1a1a1a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Header  */
+.underline {
+  text-decoration: underline;
+  text-decoration-style:dotted;
+}
+
+.MegaHeader {
+  font-size: calc(1.4rem + 2vw);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 0.88em;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 50px;
+}
+
+.MegaIcon {
+  font-size: 6rem;
+  padding: 0;
+  margin: 0;
+}
+
+.header {
+  color: #e0e0e0;
+  font-size: 0.88rem;
+  font-weight: 800;
+  border-bottom: 1px solid #515050;
+
+}
+
+/* Form */
+
+.sub-title {
+  margin-bottom: 0px;
+}
+
+fieldset {
+  border: none;
+}
+
+.question {
+  margin-bottom: 10px;
+  width: 100%;
+  background-color: transparent;
+}
+
+/* change begin */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px; /* Adjust this value as needed */
+  margin: 0 auto;
+  border-bottom: 1px solid hsl(211, 100%, 50%);
+  padding: 15px 0;
+}
+
+.radio-group input[type="radio"] {
+  display: none;
+}
+
+.radio-group label {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #fff;
+  background-color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 5px;
+  text-align: center;
+  box-sizing: border-box;
+  border: 1px solid #333;
+}
+
+.radio-group label:last-of-type {
+  border-right: none;
+}
+
+.radio-group input[type="radio"]:checked + label {
+  background-color: #007bff;
+  color: #ebebeb;
+}
+
+.radio-group label:hover {
+  border: 1px solid green;
+}
+
+.radio-group input[type="radio"]:checked + label:hover {
+  background-color: #007bff;
+}
+
+.quizSelectForm {
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mainButton {
+    margin: 50px 0;
+    padding: 10px 20px;
+    font-weight: 800;
+    font-size: 1.22rem;
+    font-family: 'Inter', sans-serif;
+    color: #fff;
+    background-color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 5px;
+    border: none;
+    width: 290px;
+}
+
+.mainButtonclicked {
+  background-color: #257e28;
+}
+
+
+.quizOverButton {
+    border: 1px solid #333;
+    padding: 10px 20px;
+    font-weight: 800;
+    font-size: 1.22rem;
+    font-family: 'Inter', sans-serif;
+    color: #fff;
+    background-color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 5px;
+    width: 290px;
+}
+
+.quizOverButton:last-child {
+  margin-bottom: 100px;
+}
+
+.quizOverButton:hover {
+  border: 1px solid green;
+}
+
+.game-status {
+  color: #92cc9d;
+}
+
+.small {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.quiz-category-header {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color:#29ab0c;
+}
+
+.quiz-question {
+  margin: 0;
+  font-size: 1.3rem;
+  padding-bottom: 20px;
+}
+
+.quiz-question-header {
+  margin-top: 70px;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #bdbdbd;
+}
+
+
+
+
+.mainButton:hover {
+  background-color: #257e28;
+}
+/* Header */
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 5fr 1fr;
+  gap: 10px;
+  width: 100%;
+}
+
+.left-col {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 0.8rem;
+}
+
+.middle-col {
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+.right-col {
+  align-items: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* QuestionBox */
+
+.QuizComponent {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 50px;
+  gap: 40px;
+  border-bottom: 2px solid navy;
+}
+
+.QuestionRow {
+  display: flex;
+  gap: 40px;
+}
+
+.quiz-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.answer-box-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 400px;
+  justify-content: center;
+}
+
+.answer-option {
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 5px 20px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 2rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.answer-option:hover {
+  border: 1px solid green;
+}
+
+.selected {
+    background-color: #007bff;
+    color: #ebebeb;
+    font-weight: 600;
+}
+
+.quiz-finish-box {
+  border: 1px solid #007bff;
+  background-color: #262626;
+  margin: 50px 15px;
+  padding: 15px 0 5px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.quiz-finish-buttons {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.stop-retry {
+  display: none;
+}
+
+.need-to-retry {
+  margin-bottom: 40px;
+}
+
+.score-reveal {
+  font-size: 1.6rem;
+  font-weight: 800;
 }
