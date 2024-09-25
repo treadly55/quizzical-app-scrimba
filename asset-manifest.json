@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/quizzical-app-scrimba/static/css/main.76361de6.css",
+    "main.js": "/quizzical-app-scrimba/static/js/main.01771e92.js",
+    "index.html": "/quizzical-app-scrimba/index.html",
+    "main.76361de6.css.map": "/quizzical-app-scrimba/static/css/main.76361de6.css.map",
+    "main.01771e92.js.map": "/quizzical-app-scrimba/static/js/main.01771e92.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.76361de6.css",
+    "static/js/main.01771e92.js"
+  ]
+}
