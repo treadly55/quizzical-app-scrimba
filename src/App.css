@@ -17,9 +17,12 @@ main {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  max-width: 670px;
+  width: 100%;
+  max-width: 100%;
   background-color: #1a1a1a;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 0 15;
+  box-sizing: border-box;
 }
 
 /* Header  */
@@ -138,6 +141,8 @@ fieldset {
     border-radius: 5px;
     border: none;
     width: 290px;
+    white-space: normal;
+    word-wrap: break-word;
 }
 
 .mainButtonclicked {
@@ -157,6 +162,8 @@ fieldset {
     transition: background-color 0.3s, color 0.3s;
     border-radius: 5px;
     width: 290px;
+    white-space: normal;
+    word-wrap: break-word;
 }
 
 .quizOverButton:last-child {
@@ -167,9 +174,6 @@ fieldset {
   border: 1px solid green;
 }
 
-.game-status {
-  color: #92cc9d;
-}
 
 .small {
   font-size: 1rem;
@@ -179,13 +183,19 @@ fieldset {
 .quiz-category-header {
   font-size: 1.1rem;
   font-weight: 400;
-  color:#29ab0c;
+  color:#d3d3d3;
+}
+
+.game-status {
+  color: #38bb38;
 }
 
 .quiz-question {
   margin: 0;
   font-size: 1.3rem;
   padding-bottom: 20px;
+  letter-spacing: 0.04rem;
+  font-weight: 800;
 }
 
 .quiz-question-header {
@@ -194,9 +204,6 @@ fieldset {
   font-size: 1rem;
   color: #bdbdbd;
 }
-
-
-
 
 .mainButton:hover {
   background-color: #257e28;
@@ -246,6 +253,7 @@ fieldset {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 15px;
 }
 
 .answer-box-options {
@@ -264,6 +272,8 @@ fieldset {
   text-align: center;
   line-height: 2rem;
   transition: background-color 0.3s, color 0.3s;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .answer-option:hover {
@@ -303,5 +313,19 @@ fieldset {
 
 .score-reveal {
   font-size: 1.6rem;
-  font-weight: 800;
+  font-weight: 400;
+}
+
+
+
+@media (max-width: 480px) {
+  .answer-box-options {
+    width: 100%;  
+  }
+
+  .mainButton,
+  .quizOverButton {
+    width: 100%;  
+    max-width: 290px;  
+  }
 }

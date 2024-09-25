@@ -252,7 +252,7 @@ export default function App() {
 
   const QuizPageMain = () => (
     <div>
-      <h3 className='quiz-category-header'>You are playing on <span className='game-status'>{quizType === 'hard' ? "Hard" : quizType === 'medium' ? "Medium" : "Easy"}</span> difficulty in the <span className='game-status'>{selectedCategory ? selectedCategory.name : selectedCategorySaved}</span> category</h3>
+      <h3 className='quiz-category-header'>You are now playing on <span className='game-status'>{quizType === 'hard' ? "Hard" : quizType === 'medium' ? "Medium" : "Easy"}</span> difficulty in the <span className='game-status'>{selectedCategory ? selectedCategory.name : selectedCategorySaved}</span> category</h3>
             
       {quizData.map((item, index) => (
         <QuizBox 
@@ -291,7 +291,6 @@ export default function App() {
               quickFixResetQuiz()
               scrollToTop()
             }}>Retry quiz</button>
-
             <button className="quizOverButton small" onClick={restartCurrentGame}>New {selectedCategory ? selectedCategory.name : ''} Questions</button>
 
             <button className="quizOverButton small" onClick={() => {
