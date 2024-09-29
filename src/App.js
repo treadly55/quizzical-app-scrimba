@@ -251,7 +251,16 @@ export default function App() {
     </div>
   )
 
-  const QuizPageMain = () => (
+  const QuizPageMain = () => {
+    const [showConfetti, setShowConfetti] = useState(false)
+
+    useEffect(() => {
+      if (showResults && score > 1) {
+        setShowConfetti(true)
+      }
+    }, [showResults, score])
+
+    return (
     <div>
       <h3 className='quiz-category-header'>You are now playing on <span className='game-status'>{quizType === 'hard' ? "Hard" : quizType === 'medium' ? "Medium" : "Easy"}</span> difficulty in the <span className='game-status'>{selectedCategory ? selectedCategory.name : selectedCategorySaved}</span> category</h3>
             
@@ -285,13 +294,18 @@ export default function App() {
 
           <h2>Quiz Completed!</h2>
           <p className='score-reveal'>Your final score is: {score}/{quizData.length}</p>
-          {score > 1 ? 
+          {score > 4 ? 
             <div>
               <p>Perfect score! 💯💯💯</p>
-              <Confetti
-                width={window.innerWidth}
-                numberOfPieces={500}
-              />
+              {showConfetti && (
+                <Confetti
+                  width={window.innerWidth}
+                  height={window.innerHeight}
+                  numberOfPieces={500}
+                  recycle={false}
+                  style={{position: 'fixed', top: 0, left: 0, zIndex: 9999}}
+                />
+              )}
             </div> : <p>Try again to get a perfect score?</p>
           }
           <div className="quiz-finish-buttons">
@@ -313,7 +327,7 @@ export default function App() {
       )}
     </div>
   )
-
+  }
   return (
     <main>
       <Header 
