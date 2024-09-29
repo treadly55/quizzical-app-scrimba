@@ -5,6 +5,8 @@ import QuizBox from './Quiz.js'
 import { nanoid } from 'nanoid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'; 
+import Confetti from 'react-confetti';
+
 
 
 const categories = [
@@ -179,7 +181,6 @@ export default function App() {
     <div>
       <div className="MegaIcon">🤯</div>
       <h1 className="MegaHeader">Welcome to Quizzmania</h1>
-
       <form className="quizSelectForm quiz-form">
         <h4 className="sub-title">Choose a subject</h4>
         <div className="radio-group">
@@ -281,9 +282,18 @@ export default function App() {
 
       {showResults && (
         <div ref={bottomRef} className="quiz-finish-box">
+
           <h2>Quiz Completed!</h2>
           <p className='score-reveal'>Your final score is: {score}/{quizData.length}</p>
-          {score > 4 ? <p>Perfect score! 💯💯💯</p> : <p>Try again to get a perfect score?</p>}
+          {score > 1 ? 
+            <div>
+              <p>Perfect score! 💯💯💯</p>
+              <Confetti
+                width={window.innerWidth}
+                numberOfPieces={500}
+              />
+            </div> : <p>Try again to get a perfect score?</p>
+          }
           <div className="quiz-finish-buttons">
             
             <button className={`quizOverButton ${score > 4 ? "stop-retry" : "need-to-retry"}`} 
@@ -301,8 +311,6 @@ export default function App() {
           </div>
         </div>
       )}
-
-
     </div>
   )
 
