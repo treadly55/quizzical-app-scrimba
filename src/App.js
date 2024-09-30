@@ -136,7 +136,7 @@ export default function App() {
   const scrollToTop = useCallback(() => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: 'auto'
     });
   }, []);
   
@@ -149,7 +149,7 @@ export default function App() {
 
   const scrollToBottom = useCallback(() => {
     if(bottomRef.current) {
-      bottomRef.current.scrollIntoView({behavior: 'smooth'})
+      bottomRef.current.scrollIntoView({behavior: 'auto'})
     }
   }, [])
 
