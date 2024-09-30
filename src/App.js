@@ -30,10 +30,10 @@ export default function App() {
   const [buttonText, setButtonText] = useState('Start the Quiz')
   const [checkBtnHighlight, setCheckBtnHighlight] = useState(false)
   const topRef = useRef(null)
+  const bottomRef = useRef(null)
 
 
   const scoreCalculatedRef = useRef(false)
-  const bottomRef = useRef(null)
   const allQuestionsAnswered = quizData.every(item => selectedAnswers[item.id])
   const showAnswerButtonCondStyle = quizData.length > 0 && quizData.every(item => selectedAnswers[item.id])
 
@@ -88,6 +88,7 @@ export default function App() {
       calculateScore()
       setQuizCompleted(true)
       setShowResults(true)
+      scrollToBottom()
     } else {
       const answeredCount = Object.keys(selectedAnswers).length
       alert(`Please answer all questions. You've answered ${answeredCount} out of ${quizData.length} questions.`)
@@ -139,65 +140,11 @@ export default function App() {
   }, [])
 
 
-  // const scrollToTop = useCallback(() => {
-  //   window.scrollTo({
-  //     top: 0,
-  //     behavior: 'auto'
-  //   });
-  // }, []);
-
-
-  // const scrollToTopCalc = useCallback(() => {
-  //   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  //   if (scrollTop > 0) {
-  //     window.requestAnimationFrame(scrollToTopCalc);
-  //     window.scrollTo(0, scrollTop - scrollTop / 8);
-  //   }
-  // }, []);
-
-
-  // const scrollToTop = useCallback(() => {
-  //   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  //   if (scrollTop > 0) {
-  //     window.requestAnimationFrame(scrollToTop);
-  //     window.scrollTo(0, scrollTop - scrollTop / 8);
-  //   }
-  // }, []);
-
-  // const scrollToTop = useCallback(() => {
-  //   if ('scrollBehavior' in document.documentElement.style) {
-  //     window.scrollTo({
-  //       top: 0,
-  //       behavior: 'smooth'
-  //     });
-  //   } else {
-  //     const scrollStep = -window.scrollY / (500 / 15);
-  //     const scrollInterval = setInterval(() => {
-  //       if (window.scrollY !== 0) {
-  //         window.scrollBy(0, scrollStep);
-  //       } else {
-  //         clearInterval(scrollInterval);
-  //       }
-  //     }, 15);
-  //   }
-  // }, [])
-
-
-
-
-  
-  // const scrollToTopFast = useCallback(() => {
-  //   window.scrollTo({
-  //     top: 0,
-  //     behavior: 'auto'
-  //   });
-  // }, []);
-
   const scrollToBottom = useCallback(() => {
-    if(bottomRef.current) {
-      bottomRef.current.scrollIntoView({behavior: 'auto'})
-    }
+    bottomRef.current?.scrollIntoView();
   }, [])
+
+
 
   const handleStartQuiz = () => {
     setButtonText(
@@ -219,14 +166,13 @@ export default function App() {
 
 
   const selectedCategory = categories.find(category => category.id === categoryId);
-  const selectedCategorySaved = "fixed bleh"
-
+  const selectedCategorySaved = ""
 
 
   const QuizPageLanding = () => (  
     <div>
       <div className="MegaIcon">🤯</div>
-      <h1 className="MegaHeader">Welcome to Quizzmania1</h1>
+      <h1 className="MegaHeader">Welcome to Quizzmania1.01</h1>
       <form className="quizSelectForm quiz-form">
         <h4 className="sub-title">Choose a subject</h4>
         <div className="radio-group">
@@ -387,6 +333,7 @@ export default function App() {
       />
       {page === 'landing' && <QuizPageLanding />}
       {page === 'main' && <QuizPageMain />}
+      <div ref={bottomRef} />
     </main>
   )
 }
