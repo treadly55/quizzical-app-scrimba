@@ -95,16 +95,32 @@ export default function App() {
     }
   }
 
-  const resetQuiz = () => {
+  // const resetQuiz = () => {
+  //   setSelectedAnswers({})
+  //   setScore(0)
+  //   setQuizCompleted(false)
+  //   setShowResults(false)
+  //   scoreCalculatedRef.current = false
+  //   setQuizType(null)
+  //   setCategoryId(null)
+  //   setCheckBtnHighlight(false)
+  // }
+
+  const resetQuiz = (keepSettings = false) => {
     setSelectedAnswers({})
     setScore(0)
     setQuizCompleted(false)
     setShowResults(false)
     scoreCalculatedRef.current = false
-    setQuizType(null)
-    setCategoryId(null)
     setCheckBtnHighlight(false)
-  }
+    if (!keepSettings) {
+      setQuizType(null)
+      setCategoryId(null)
+    }
+  }  
+
+
+
 
   const quickFixResetQuiz = () => {
     setSelectedAnswers({})
@@ -117,11 +133,22 @@ export default function App() {
   }
 
   const restartCurrentGame = () => {
-    resetQuiz()
+    resetQuiz(true)
     fetchQuizData()
     scrollToTop()
-    
   }
+
+  // const startQuiz = () => {
+  //   if (quizType && categoryId) {
+  //     setTimeout(() => {
+  //       setPage('main')
+  //       scrollToTop()
+  //     }, 1000)
+  //     fetchQuizData()
+  //   } else {
+  //     alert("Please select a difficulty and category to begin")
+  //   }
+  // }
 
   const startQuiz = () => {
     if (quizType && categoryId) {
@@ -246,17 +273,24 @@ export default function App() {
 
   const QuizPageMain = () => {
     const [showConfetti, setShowConfetti] = useState(false)
+    const [localCategory, setLocalCategory] = useState(selectedCategory?.name || '')
+    const [localDifficulty, setLocalDifficulty] = useState(quizType || '')
 
     useEffect(() => {
-      if (showResults && score > 1) {
+      if (showResults && score > 4) {
         setShowConfetti(true)
       }
     }, [showResults, score])
 
     return (
     <div>
-      <h3 className='quiz-category-header'>You are now playing on <span className='game-status'>{quizType === 'hard' ? "Hard" : quizType === 'medium' ? "Medium" : "Easy"}</span> difficulty in the <span className='game-status'>{selectedCategory ? selectedCategory.name : selectedCategorySaved}</span> category</h3>
-            
+      <h3 className='quiz-category-header'>
+        You are now playing on <span className='game-status'>
+          {localDifficulty === 'hard' ? "Hard" : localDifficulty === 'medium' ? "Medium" : "Easy"}
+        </span> difficulty in the <span className='game-status'>
+          {localCategory || 'Unknown'}
+        </span> category
+      </h3>
       {quizData.map((item, index) => (
         <QuizBox 
           key={item.id}
@@ -308,8 +342,9 @@ export default function App() {
               quickFixResetQuiz()
               scrollToTop()
             }}>Retry quiz</button>
-            <button className="quizOverButton small" onClick={restartCurrentGame}>New {selectedCategory ? selectedCategory.name : ''} Questions</button>
-
+            <button className="quizOverButton small" onClick={restartCurrentGame}>
+              New {selectedCategory ? selectedCategory.name : 'Quiz'} Questions
+            </button>
             <button className="quizOverButton small" onClick={() => {
               setPage('landing')
               resetQuiz()
