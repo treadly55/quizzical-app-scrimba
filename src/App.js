@@ -125,7 +125,7 @@ export default function App() {
     if (quizType && categoryId) {
       setTimeout(() => {
         setPage('main')
-        scrollToTopFast()
+        scrollToTop()
       }, 1000)
       fetchQuizData()
     } else {
@@ -366,7 +366,7 @@ export default function App() {
             <button className="quizOverButton small" onClick={() => {
               setPage('landing')
               resetQuiz()
-              scrollToTopFast()
+              scrollToTop()
             }}>Restart Quizzmania</button>
           </div>
         </div>
