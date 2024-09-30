@@ -133,12 +133,49 @@ export default function App() {
   }
 
 
+  // const scrollToTop = useCallback(() => {
+  //   window.scrollTo({
+  //     top: 0,
+  //     behavior: 'auto'
+  //   });
+  // }, []);
+
+
+  // const scrollToTopCalc = useCallback(() => {
+  //   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  //   if (scrollTop > 0) {
+  //     window.requestAnimationFrame(scrollToTopCalc);
+  //     window.scrollTo(0, scrollTop - scrollTop / 8);
+  //   }
+  // }, []);
+
+
+  // const scrollToTop = useCallback(() => {
+  //   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  //   if (scrollTop > 0) {
+  //     window.requestAnimationFrame(scrollToTop);
+  //     window.scrollTo(0, scrollTop - scrollTop / 8);
+  //   }
+  // }, []);
+
   const scrollToTop = useCallback(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'auto'
-    });
-  }, []);
+    if ('scrollBehavior' in document.documentElement.style) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    } else {
+      const scrollStep = -window.scrollY / (500 / 15);
+      const scrollInterval = setInterval(() => {
+        if (window.scrollY !== 0) {
+          window.scrollBy(0, scrollStep);
+        } else {
+          clearInterval(scrollInterval);
+        }
+      }, 15);
+    }
+  }, [])
+
   
   const scrollToTopFast = useCallback(() => {
     window.scrollTo({
