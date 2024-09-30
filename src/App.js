@@ -120,6 +120,7 @@ export default function App() {
     resetQuiz()
     fetchQuizData()
     scrollToTop()
+    
   }
 
   const startQuiz = () => {
@@ -166,7 +167,7 @@ export default function App() {
 
 
   const selectedCategory = categories.find(category => category.id === categoryId);
-  const selectedCategorySaved = ""
+  const selectedCategorySaved = "test"
 
 
   const QuizPageLanding = () => (  
