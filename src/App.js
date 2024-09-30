@@ -29,6 +29,7 @@ export default function App() {
   const [categoryId, setCategoryId] = useState(null)
   const [buttonText, setButtonText] = useState('Start the Quiz')
   const [checkBtnHighlight, setCheckBtnHighlight] = useState(false)
+  const topRef = useRef(null)
 
 
   const scoreCalculatedRef = useRef(false)
@@ -133,6 +134,11 @@ export default function App() {
   }
 
 
+  const scrollToTop = useCallback(() => {
+    topRef.current?.scrollIntoView()
+  }, [])
+
+
   // const scrollToTop = useCallback(() => {
   //   window.scrollTo({
   //     top: 0,
@@ -158,31 +164,34 @@ export default function App() {
   //   }
   // }, []);
 
-  const scrollToTop = useCallback(() => {
-    if ('scrollBehavior' in document.documentElement.style) {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    } else {
-      const scrollStep = -window.scrollY / (500 / 15);
-      const scrollInterval = setInterval(() => {
-        if (window.scrollY !== 0) {
-          window.scrollBy(0, scrollStep);
-        } else {
-          clearInterval(scrollInterval);
-        }
-      }, 15);
-    }
-  }, [])
+  // const scrollToTop = useCallback(() => {
+  //   if ('scrollBehavior' in document.documentElement.style) {
+  //     window.scrollTo({
+  //       top: 0,
+  //       behavior: 'smooth'
+  //     });
+  //   } else {
+  //     const scrollStep = -window.scrollY / (500 / 15);
+  //     const scrollInterval = setInterval(() => {
+  //       if (window.scrollY !== 0) {
+  //         window.scrollBy(0, scrollStep);
+  //       } else {
+  //         clearInterval(scrollInterval);
+  //       }
+  //     }, 15);
+  //   }
+  // }, [])
+
+
+
 
   
-  const scrollToTopFast = useCallback(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'auto'
-    });
-  }, []);
+  // const scrollToTopFast = useCallback(() => {
+  //   window.scrollTo({
+  //     top: 0,
+  //     behavior: 'auto'
+  //   });
+  // }, []);
 
   const scrollToBottom = useCallback(() => {
     if(bottomRef.current) {
@@ -217,7 +226,7 @@ export default function App() {
   const QuizPageLanding = () => (  
     <div>
       <div className="MegaIcon">🤯</div>
-      <h1 className="MegaHeader">Welcome to Quizzmania</h1>
+      <h1 className="MegaHeader">Welcome to Quizzmania1</h1>
       <form className="quizSelectForm quiz-form">
         <h4 className="sub-title">Choose a subject</h4>
         <div className="radio-group">
@@ -367,6 +376,7 @@ export default function App() {
   }
   return (
     <main>
+      <div ref={topRef} />
       <Header 
         currentPage={page} 
         onBackClick={() => {
