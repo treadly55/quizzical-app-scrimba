@@ -25,7 +25,6 @@ main {
   box-sizing: border-box;
 }
 
-/* Header  */
 .underline {
   text-decoration: underline;
   text-decoration-style:dotted;
@@ -52,10 +51,7 @@ main {
   font-size: 0.88rem;
   font-weight: 800;
   border-bottom: 1px solid #515050;
-
 }
-
-/* Form */
 
 .sub-title {
   margin-bottom: 0px;
@@ -71,12 +67,11 @@ fieldset {
   background-color: transparent;
 }
 
-/* change begin */
 .radio-group {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 300px; /* Adjust this value as needed */
+  max-width: 300px; 
   margin: 0 auto;
   border-bottom: 1px solid hsl(211, 100%, 50%);
   padding: 15px 0;
@@ -128,7 +123,7 @@ fieldset {
   align-items: center;
 }
 
-.mainButton {
+.mainButton, .quizOverButton {
     margin: 50px 0;
     padding: 10px 20px;
     font-weight: 800;
@@ -145,25 +140,9 @@ fieldset {
     word-wrap: break-word;
 }
 
-.mainButtonclicked {
-  background-color: #257e28;
-}
-
-
 .quizOverButton {
-    border: 1px solid #333;
-    padding: 10px 20px;
-    font-weight: 800;
-    font-size: 1.22rem;
-    font-family: 'Inter', sans-serif;
-    color: #fff;
-    background-color: #333;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    border-radius: 5px;
-    width: 290px;
-    white-space: normal;
-    word-wrap: break-word;
+  border: 1px solid #333;
+  margin: 10px 0;
 }
 
 .quizOverButton:last-child {
@@ -173,7 +152,6 @@ fieldset {
 .quizOverButton:hover {
   border: 1px solid green;
 }
-
 
 .small {
   font-size: 1rem;
@@ -208,7 +186,6 @@ fieldset {
 .mainButton:hover {
   background-color: #257e28;
 }
-/* Header */
 
 .grid-container {
   display: grid;
@@ -233,8 +210,6 @@ fieldset {
 .right-col {
   align-items: center;
 }
-
-/* QuestionBox */
 
 .QuizComponent {
   display: flex;
@@ -315,7 +290,6 @@ fieldset {
   font-size: 1.6rem;
   font-weight: 400;
 }
-
 
 
 @media (max-width: 480px) {

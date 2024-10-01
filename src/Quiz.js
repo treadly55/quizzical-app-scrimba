@@ -1,6 +1,5 @@
-import React from 'react';
+import React from 'react'
 import he from 'he'
-
 
 const QuizBox = ({ 
 id, 
@@ -17,10 +16,8 @@ const decodeIfNeeded = (text) => {
     const decodedText = he.decode(text)
     return text !== decodedText ? decodedText : text
 }
-
 const cleanedQuestion = decodeIfNeeded(question)
 const cleanedOptions = options.map(option => decodeIfNeeded(option))
-
 
 return (
 <div className="quiz-box">
@@ -30,7 +27,7 @@ return (
     {cleanedOptions.map((option, index) => (
         <div
         key={index}
-        onClick={() => !isCompleted && onAnswerClick(option)} // CHANGED: Added condition to prevent clicks when completed
+        onClick={() => !isCompleted && onAnswerClick(option)}
         className={`answer-option ${selectedAnswer === option ? 'selected' : ''} ${isCompleted && option === answer ? 'correct' : ''} ${isCompleted && selectedAnswer === option && option !== answer ? 'incorrect' : ''}`}
         >
         {option}
@@ -38,7 +35,6 @@ return (
     ))}
     </div>
 </div>
-);
-};
+)}
 
-export default QuizBox;
+export default QuizBox
