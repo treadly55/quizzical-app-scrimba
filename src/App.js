@@ -19,7 +19,6 @@ const categories = [
 ]
 export default function App() {
   const [quizData, setQuizData] = useState([])
-  const [unfilteredData, setUnfilteredData] = useState([])
   const [page, setPage] = useState('landing')
   const [selectedAnswers, setSelectedAnswers] = useState({})
   const [score, setScore] = useState(0)
@@ -31,20 +30,14 @@ export default function App() {
   const [checkBtnHighlight, setCheckBtnHighlight] = useState(false)
   const topRef = useRef(null)
   const bottomRef = useRef(null)
-
-
   const scoreCalculatedRef = useRef(false)
   const allQuestionsAnswered = quizData.every(item => selectedAnswers[item.id])
-  const showAnswerButtonCondStyle = quizData.length > 0 && quizData.every(item => selectedAnswers[item.id])
 
 
   const fetchQuizData = useCallback(async () => {
-    console.log('calling API')
     try {
       const response = await fetch(`https://opentdb.com/api.php?amount=5&category=${categoryId}&difficulty=${quizType}&type=multiple`)
       const data = await response.json()
-      console.log(data)
-      setUnfilteredData(data)
       const mappedData = data.results.map((item) => {
         const shuffledOptions = [...item.incorrect_answers, item.correct_answer].sort(() => Math.random() - 0.5);
         return {
@@ -58,9 +51,8 @@ export default function App() {
         };
       });
       setQuizData(mappedData)
-      console.log('Data logged', mappedData)
     } catch (error) {
-      console.log('Error fetching data:', error)
+      console.error('Error fetching data:', error)
     }
   }, [quizType, categoryId])
 
@@ -95,17 +87,6 @@ export default function App() {
     }
   }
 
-  // const resetQuiz = () => {
-  //   setSelectedAnswers({})
-  //   setScore(0)
-  //   setQuizCompleted(false)
-  //   setShowResults(false)
-  //   scoreCalculatedRef.current = false
-  //   setQuizType(null)
-  //   setCategoryId(null)
-  //   setCheckBtnHighlight(false)
-  // }
-
   const resetQuiz = (keepSettings = false) => {
     setSelectedAnswers({})
     setScore(0)
@@ -119,36 +100,11 @@ export default function App() {
     }
   }  
 
-
-
-
-  const quickFixResetQuiz = () => {
-    setSelectedAnswers({})
-    setScore(0)
-    setQuizCompleted(false)
-    setShowResults(false)
-    scoreCalculatedRef.current = false
-    setQuizType(null)
-    setCheckBtnHighlight(false)
-  }
-
   const restartCurrentGame = () => {
     resetQuiz(true)
     fetchQuizData()
     scrollToTop()
   }
-
-  // const startQuiz = () => {
-  //   if (quizType && categoryId) {
-  //     setTimeout(() => {
-  //       setPage('main')
-  //       scrollToTop()
-  //     }, 1000)
-  //     fetchQuizData()
-  //   } else {
-  //     alert("Please select a difficulty and category to begin")
-  //   }
-  // }
 
   const startQuiz = () => {
     if (quizType && categoryId) {
@@ -190,12 +146,9 @@ export default function App() {
     if(showResults) {
       scrollToBottom()
     }
-  }, [showResults, scrollToBottom])
-
+    }, [showResults])
 
   const selectedCategory = categories.find(category => category.id === categoryId);
-  const selectedCategorySaved = "test"
-
 
   const QuizPageLanding = () => (  
     <div>
@@ -339,7 +292,7 @@ export default function App() {
             
             <button className={`quizOverButton ${score > 4 ? "stop-retry" : "need-to-retry"}`} 
               onClick={() => {
-              quickFixResetQuiz()
+              resetQuiz()
               scrollToTop()
             }}>Retry quiz</button>
             <button className="quizOverButton small" onClick={restartCurrentGame}>
