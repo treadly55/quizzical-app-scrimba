@@ -157,7 +157,7 @@ export default function App() {
   const QuizPageLanding = () => (  
     <div>
       <div className="MegaIcon">🤯</div>
-      <h1 className="MegaHeader">Welcome to Quizzmania1.01</h1>
+      <h1 className="MegaHeader">Welcome to Quizzmania</h1>
       <form className="quizSelectForm quiz-form">
         <h4 className="sub-title">Choose a subject</h4>
         <div className="radio-group">
