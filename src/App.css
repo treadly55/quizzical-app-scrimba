@@ -303,3 +303,12 @@ fieldset {
     max-width: 290px;  
   }
 }
+
+
+.correct{
+  background-color: green;
+}
+
+.incorrect{
+  background-color: red;
+}
