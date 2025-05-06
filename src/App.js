@@ -1,51 +1,52 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
-import Header from "./Header.js"; // Assuming Header.js is in the same directory
+import Header from "./Header.js";
 import QuizPageLanding from "./components/QuizPageLanding";
 import QuizPageMain from "./components/QuizPageMain";
-import { categories } from "./constants"; // Assuming constants.js is in the same directory
-import { fetchQuizData } from "./services/quizService"; // Assuming quizService.js is in services/
+// --- STEP 3.1: Import the new results page component ---
+import QuizResultsPage from "./components/QuizResultsPage"; 
+import { categories } from "./constants";
+import { fetchQuizData } from "./services/quizService";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 export default function App() {
+    // --- STATE VARIABLES ---
     const [quizData, setQuizData] = useState([]);
-    const [page, setPage] = useState("landing"); // 'landing' or 'main'
+    const [page, setPage] = useState("landing"); // 'landing', 'main', 'results'
     const [selectedAnswers, setSelectedAnswers] = useState({});
     const [score, setScore] = useState(0);
     const [quizCompleted, setQuizCompleted] = useState(false);
-    const [showResults, setShowResults] = useState(false);
-    const [quizType, setQuizType] = useState(null); // 'easy', 'medium', 'hard'
-    const [categoryId, setCategoryId] = useState(null); // e.g., 9, 10, etc.
+    const [quizType, setQuizType] = useState(null); 
+    const [categoryId, setCategoryId] = useState(null); 
     const [buttonText, setButtonText] = useState("Start the Quiz");
-    const [checkBtnHighlight, setCheckBtnHighlight] = useState(false); // Seems unused? Review later.
+    const [checkBtnHighlight, setCheckBtnHighlight] = useState(false); 
     const [feedbackMessage, setFeedbackMessage] = useState("");
 
+    // --- REFS ---
     const topRef = useRef(null);
-    const bottomRef = useRef(null);
 
-    // Scroll functions (defined before usage in other useCallback/useEffect deps)
+    // --- SCROLL FUNCTIONS ---
     const scrollToTop = useCallback(() => {
       topRef.current?.scrollIntoView({ behavior: 'smooth' }); 
     }, []);
 
-    const scrollToBottom = useCallback(() => {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }); 
-    }, []);
-
-    // Derived state: Check if all questions have been answered
+    // --- DERIVED STATE ---
     const allQuestionsAnswered = quizData.length > 0 && quizData.every(
         (item) => selectedAnswers[item.id] !== undefined 
     );
-
-    // Derived state: Find the category object based on ID
     const selectedCategory = categories.find(
         (category) => category.id === categoryId
     );
+    // Derived formatted names for results page props
+    const categoryName = selectedCategory?.name || 'Selected';
+    const difficultyName = quizType ? quizType.charAt(0).toUpperCase() + quizType.slice(1) : 'Chosen';
 
-    // Memoized function to fetch quiz data
+
+    // --- DATA FETCHING ---
     const handleFetchQuizData = useCallback(async () => {
-        if (!categoryId || !quizType) {
+       // ... (fetch logic remains the same) ...
+       if (!categoryId || !quizType) {
              setFeedbackMessage("Category and difficulty are required."); 
              setButtonText("Start the Quiz"); 
              return;
@@ -58,7 +59,6 @@ export default function App() {
                 setQuizData(data);
                 setSelectedAnswers({}); 
                 setQuizCompleted(false); 
-                setShowResults(false);   
                 setScore(0);             
                 setPage("main");         
                 setFeedbackMessage("");  
@@ -76,108 +76,76 @@ export default function App() {
         }
     }, [quizType, categoryId, scrollToTop]); 
 
-    // Memoized function to handle selecting an answer
+    // --- ANSWER HANDLING ---
     const handleAnswerClick = useCallback((questionID, selectedAnswer) => {
-      // --- ADDED LOG 1: Function Entry ---
-      console.log(`App handleAnswerClick: Received click for questionID="${questionID}", answer="${selectedAnswer}", quizCompleted state is ${quizCompleted}`);
-      // --- END LOG 1 ---
-
       if (!quizCompleted) {
-        // --- ADDED LOG 2: Condition Met ---
-        console.log('App handleAnswerClick: Processing selection because quizCompleted is false.');
-        // --- END LOG 2 ---
-
-        // Modify the state updater slightly to add logging inside it
-        setSelectedAnswers((prevAnswers) => {
-          const newAnswers = {
-            ...prevAnswers,
-            [questionID]: selectedAnswer,
-          };
-          // --- ADDED LOG 3: State Update Function ---
-          console.log('App handleAnswerClick: Running setSelectedAnswers. New answers object will be:', newAnswers);
-          // --- END LOG 3 ---
-          return newAnswers; // Return the updated state
-        });
-
-      } else {
-        // --- ADDED LOG 4: Condition NOT Met ---
-         console.log('App handleAnswerClick: Selection ignored because quizCompleted is true.');
-        // --- END LOG 4 ---
+        setSelectedAnswers((prevAnswers) => ({ ...prevAnswers, [questionID]: selectedAnswer }));
       }
-    }, [quizCompleted]); // Keep dependency array simple
+    }, [quizCompleted]); 
 
-    // Function to check answers
+    // --- CHECKING ANSWERS ---
     const handleCheckAnswers = () => {
         if (allQuestionsAnswered) {
             let newScore = 0;
             quizData.forEach((item) => {
-                if (selectedAnswers[item.id] === item.answer) { 
-                    newScore++;
-                }
+                if (selectedAnswers[item.id] === item.answer) { newScore++; }
             });
             setScore(newScore);
             setQuizCompleted(true); 
-            setShowResults(true);   
             setFeedbackMessage(""); 
+            setPage('results'); // Navigate to results page state
         } else {
             const answeredCount = Object.keys(selectedAnswers).length;
             const totalQuestions = quizData.length;
-            // Add console logs here later if needed for the count issue
             setFeedbackMessage(
                 `Please answer all ${totalQuestions} questions. You've answered ${answeredCount}.`
             );
         }
     };
 
-    // Function to reset quiz state
-    const resetQuiz = (keepSettings = false) => {
+    // --- QUIZ RESET / NAVIGATION LOGIC ---
+    const resetQuiz = useCallback((keepSettings = false) => {
         setSelectedAnswers({});
         setScore(0);
         setQuizCompleted(false);
-        setShowResults(false);
-        setFeedbackMessage(""); 
+        setFeedbackMessage("");         
         if (!keepSettings) {
             setQuizType(null);
             setCategoryId(null);
             setQuizData([]); 
-            setPage('landing'); 
+            setPage('landing'); // Navigate to Landing
+        } else {
+             setPage('main'); // Navigate back to Main Quiz view for retry
+             // scrollToTop(); // Already called within restartCurrentGame/handleFetchQuizData if needed
         }
-    };
+    }, []); // Removed scrollToTop dep as it's called elsewhere now
 
-    // Function to fetch new questions for the same category/difficulty
-    const restartCurrentGame = () => {
+    // --- RESTARTING WITH NEW QUESTIONS ---
+    const restartCurrentGame = useCallback(() => {
+        // resetQuiz(true) will clear answers/score but keep settings and set page='main'
+        // handleFetchQuizData will then fetch new data and ensure page='main'
+        // Feedback message handled within fetch
         resetQuiz(true); 
-        setFeedbackMessage("Loading new questions..."); 
         handleFetchQuizData(); 
-    };
+    }, [resetQuiz, handleFetchQuizData]);
 
-    // Handler for the "Start Quiz" button click
+    // --- STARTING QUIZ FROM LANDING ---
     const handleStartQuiz = () => {
         if (quizType && categoryId) {
             setFeedbackMessage("");
-            handleFetchQuizData();
+            handleFetchQuizData(); 
         } else {
             setFeedbackMessage("Please select both a difficulty and a category to begin.");
         }
     };
 
-    // Effect to scroll to results when they are shown
-    useEffect(() => {
-        if (showResults) {
-            const timer = setTimeout(() => {
-                scrollToBottom();
-            }, 100); 
-            return () => clearTimeout(timer); 
-        }
-    }, [showResults, scrollToBottom]); 
-
-    // Main render logic
+    // --- MAIN RENDER LOGIC ---
     return (
         <main>
             <div ref={topRef} />             
             <Header
                 currentPage={page}
-                onBackClick={() => { resetQuiz(false); }}
+                onBackClick={() => { resetQuiz(false); }} 
             />
 
             {/* Landing Page */}
@@ -195,38 +163,48 @@ export default function App() {
             )}
 
             {/* Main Quiz Page */}
-            {page === "main" && quizData.length > 0 && (
+             {/* Render only when page is 'main' */}
+            {page === "main" && (
                 <QuizPageMain
+                    // Pass only the necessary props after cleanup
                     quizData={quizData}
                     selectedAnswers={selectedAnswers}
                     handleAnswerClick={handleAnswerClick}
                     handleCheckAnswers={handleCheckAnswers}
-                    quizCompleted={quizCompleted}
-                    showResults={showResults}
-                    score={score}
-                    selectedCategory={selectedCategory}
-                    quizType={quizType}
-                    resetQuiz={resetQuiz} 
-                    restartCurrentGame={restartCurrentGame} 
-                    setPage={setPage} 
-                    scrollToTop={scrollToTop} 
-                    scrollToBottom={scrollToBottom} 
-                    feedbackMessage={feedbackMessage}
+                    quizCompleted={quizCompleted} 
+                    selectedCategory={selectedCategory} // For header display
+                    quizType={quizType} // For header display
+                    feedbackMessage={feedbackMessage} // For validation messages
                 />
             )}
 
-            {/* Loading/Error State for Main Page */}
-            {page === 'main' && quizData.length === 0 && (
-                 <div style={{ marginTop: '50px', fontSize: '1.5em', color: feedbackMessage ? '#ff8a8a' : '#fff' }}>
+            {/* --- STEP 3.2: Render Results Page --- */}
+            {page === 'results' && quizData.length > 0 && ( // Added quizData check for safety
+                <QuizResultsPage
+                    score={score}
+                    totalQuestions={quizData.length} 
+                    categoryName={categoryName} 
+                    difficultyName={difficultyName} 
+                    // Pass callback functions directly
+                    onRetry={() => resetQuiz(true)} 
+                    onNewQuestions={restartCurrentGame} 
+                    onChooseNew={() => resetQuiz(false)} 
+                />
+            )}
+            {/* --- End of Results Page Rendering --- */}
+
+
+            {/* Loading/Error State - Adjusted slightly */}
+             {page !== 'landing' && quizData.length === 0 && ( 
+                 <div style={{ marginTop: '50px', fontSize: '1.5em', color: feedbackMessage.includes('Failed') ? '#ff8a8a' : '#fff' }}>
                      {feedbackMessage ? (
                          feedbackMessage 
                      ) : (
-                         <> <FontAwesomeIcon icon={faSpinner} spin /> Loading Questions... </> 
+                         page === 'main' && <> <FontAwesomeIcon icon={faSpinner} spin /> Loading Questions... </> 
                      )}
                  </div>
              )}
-
-            <div ref={bottomRef} style={{ height: '1px' }} /> 
+             
         </main>
     );
 }
