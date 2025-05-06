@@ -263,6 +263,8 @@ fieldset {
   flex-direction: column;
   align-items: center;
   border-radius: 10px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .quiz-finish-buttons {
@@ -361,6 +363,49 @@ fieldset {
   margin-left: 4px; /* Add a small space before it */
 }
 
+.score-commentary {
+  font-size: 1rem;
+}
+
+.score-result {
+  padding-top: 15px;
+  color: red;
+}
+
+
+.score-reveal-container { /* Or use .score-reveal if you kept that class name */
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center;    /* Center items horizontally */
+  gap: 10px;              /* Space between the flex items (the child divs) */
+  margin-top: 20px;       /* Example: Space above the score section */
+  margin-bottom: 20px;    /* Example: Space below the score section */
+  text-align: center;     /* Ensures text inside child divs is centered if they aren't full width */
+  /* You might want to carry over some styles from the old .score-reveal p tag */
+  font-size: 1.2rem; /* Base font size for this section */
+}
+
+.score-intro-text {
+  /* Specific styles for the "Your final score is:" text if needed */
+  /* e.g., color: #cccccc; */
+  font-size: 1em; /* Relative to parent */
+}
+
+.score-result-value {
+  /* Styles to make the "N out of Five" part prominent */
+  font-size: 2.5em; /* Much larger font size (relative to parent .score-reveal-container) */
+  font-weight: bold;
+  color: #38bb38; /* Example: A prominent color (green) */
+  /* You could add padding, a background, border, etc. here too */
+  /* e.g., padding: 5px 10px; background-color: #333; border-radius: 5px; */
+}
+
+.score-message {
+  /* Specific styles for the commentary text if needed */
+  font-size: 1em; /* Relative to parent */
+  font-style: italic;
+  /* e.g., color: #dddddd; */
+}
 
 @media (max-width: 480px) {
   .answer-box-options {

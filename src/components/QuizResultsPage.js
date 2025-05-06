@@ -47,29 +47,20 @@ function QuizResultsPage({
       )}
 
       <h2>Quiz Completed!</h2>
-      <p className="score-reveal">
-        Your final score is: {score}/{totalQuestions}
-      </p>
 
-      {/* Feedback message based on score */}
-      {isPerfectScore ? (
-        <p>Perfect score! Well done! 💯🎉</p>
-      ) : score > totalQuestions / 2 ? (
-        <p>Good job! Keep practicing!</p>
-      ) : (
-        <p>Try again to improve your score!</p>
-      )}
-
-      {/* Action Buttons After Quiz */}
+      <div className="score-reveal-container">
+          <div className="score-intro-text">Your final score is:</div>
+          <div className="score-result-value"> 
+            {score} out of {totalQuestions}
+          </div>
+          <div className="score-message">
+            {isPerfectScore ? ("Perfect score! Well done! 💯🎉") : score > totalQuestions / 2 ? ("Good job! Keep practicing!") : ("Try again to improve your score!")}
+          </div>
+        </div>
       <div className="quiz-finish-buttons">
-        
-        {/* Button to retry the SAME questions */}
-        {/* Show retry button only if score wasn't perfect */}
         {!isPerfectScore && ( 
           <button
             className="quizOverButton need-to-retry" 
-            // Call the onRetry function passed via props
-            // NO scrolling logic here
             onClick={onRetry} 
           >
             Retry Same Questions
