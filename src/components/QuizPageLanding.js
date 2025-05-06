@@ -1,6 +1,5 @@
 import React from "react";
-import { categories } from "../constants";
-
+import { categories } from "../constants"; // Assuming constants.js is in src/
 
 const QuizPageLanding = ({
   categoryId,
@@ -9,7 +8,8 @@ const QuizPageLanding = ({
   setQuizType,
   handleStartQuiz,
   buttonText,
-  checkBtnHighlight,
+  checkBtnHighlight, // Prop received but usage unclear in original code
+  feedbackMessage, // --- RECEIVE feedbackMessage PROP ---
 }) => (
   <div>
     <div className="MegaIcon">🤯</div>
@@ -26,7 +26,8 @@ const QuizPageLanding = ({
                 name="quizCategory"
                 value={category.id}
                 checked={categoryId === category.id}
-                onChange={(e) => setCategoryId(Number(e.target.value))}
+                // Convert value back to number for state
+                onChange={(e) => setCategoryId(Number(e.target.value))} 
               />
               <label htmlFor={`category-${category.id}`}>{category.name}</label>
             </div>
@@ -58,9 +59,22 @@ const QuizPageLanding = ({
         </fieldset>
       </div>
     </form>
+
+    {/* --- CONDITIONALLY RENDER THE FEEDBACK MESSAGE --- */}
+    {feedbackMessage && (
+      <p style={{ color: '#ff8a8a', marginTop: '15px', marginBottom: '-30px', fontWeight: 'bold' }}> 
+        {/* Adjusted margin, consider moving styling to CSS class */}
+        {feedbackMessage}
+      </p>
+    )}
+    {/* --- END OF CONDITIONAL RENDERING --- */}
+
     <button
       onClick={handleStartQuiz}
-      className={`mainButton ${checkBtnHighlight ? "mainButtonclicked" : ""}`}
+      // Apply visual cue if needed, checkBtnHighlight usage was unclear
+      className={`mainButton ${checkBtnHighlight ? "mainButtonclicked" : ""}`} 
+      // Disable button if it's currently showing "Loading..." text/icon
+      disabled={typeof buttonText !== 'string' || buttonText !== "Start the Quiz"} 
     >
       {buttonText}
     </button>

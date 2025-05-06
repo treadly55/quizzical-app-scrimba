@@ -176,13 +176,6 @@ fieldset {
   font-weight: 800;
 }
 
-.quiz-question-header {
-  margin-top: 70px;
-  margin-bottom: 10px;
-  font-size: 1rem;
-  color: #bdbdbd;
-}
-
 .mainButton:hover {
   background-color: #257e28;
 }
@@ -291,6 +284,83 @@ fieldset {
   font-weight: 400;
 }
 
+.correct{
+  background-color: green;
+}
+
+.incorrect{
+  background-color: red;
+}
+
+.question-feedback {
+  /* Positioning and Spacing */
+  margin-top: 10px;    /* Add some space above the feedback */
+  margin-bottom: -5px;  /* Reduce space between feedback and "Question n" header */
+  min-height: 1.2em;   /* Reserve space even if empty initially, prevents jump */
+  
+  /* Text Styling */
+  font-size: 0.9em;    /* Slightly smaller text */
+  font-weight: bold;   /* Make it stand out */
+  text-align: center;  /* Center the feedback */
+}
+
+.correct-feedback {
+  color: #4CAF50;
+}
+.incorrect-feedback {
+  color: #F44336; 
+}
+.quiz-question-header {
+  margin-top: 70px;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #bdbdbd;
+}
+
+/* Add this rule to App.css */
+
+.unselected-wrong {
+  opacity: 0.6; /* Make non-selected wrong answers slightly faded */
+  /* You could also change background-color to a light gray, etc. */
+  /* background-color: #444; */ /* Example: Darker gray background */
+  /* border-color: #555; */    /* Example: Different border */
+}
+
+/* Ensure other styles don't conflict */
+/* Make sure .correct and .incorrect styles have enough specificity */
+/* if needed, e.g., .answer-option.correct */
+
+.answer-option.correct {
+   background-color: green;
+   opacity: 1; /* Ensure correct answer is fully opaque */
+}
+
+.answer-option.incorrect {
+   background-color: red;
+   opacity: 1; /* Ensure incorrect answer is fully opaque */
+}
+
+/* You might need to ensure the base .answer-option doesn't set opacity */
+.answer-option {
+ border: 1px solid gray;
+ border-radius: 4px;
+ padding: 5px 20px;
+ cursor: pointer;
+ text-align: center;
+ line-height: 2rem;
+ transition: background-color 0.3s, color 0.3s, opacity 0.3s; /* Added opacity */
+ white-space: normal;
+ word-wrap: break-word;
+ /* opacity: 1; /* Set default if needed */
+}
+
+.selected-indicator {
+  font-style: italic;
+  opacity: 0.85; /* Make it slightly less prominent than the answer */
+  /* color: #ddd; */ /* Optional: Slightly different color */
+  margin-left: 4px; /* Add a small space before it */
+}
+
 
 @media (max-width: 480px) {
   .answer-box-options {
@@ -302,13 +372,4 @@ fieldset {
     width: 100%;  
     max-width: 290px;  
   }
-}
-
-
-.correct{
-  background-color: green;
-}
-
-.incorrect{
-  background-color: red;
 }
