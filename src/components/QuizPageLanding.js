@@ -8,8 +8,8 @@ const QuizPageLanding = ({
   setQuizType,
   handleStartQuiz,
   buttonText,
-  checkBtnHighlight, // Prop received but usage unclear in original code
-  feedbackMessage, // --- RECEIVE feedbackMessage PROP ---
+  // checkBtnHighlight, // --- REMOVED PROP ---
+  feedbackMessage, 
 }) => (
   <div>
     <div className="MegaIcon">🤯</div>
@@ -26,7 +26,6 @@ const QuizPageLanding = ({
                 name="quizCategory"
                 value={category.id}
                 checked={categoryId === category.id}
-                // Convert value back to number for state
                 onChange={(e) => setCategoryId(Number(e.target.value))} 
               />
               <label htmlFor={`category-${category.id}`}>{category.name}</label>
@@ -60,20 +59,16 @@ const QuizPageLanding = ({
       </div>
     </form>
 
-    {/* --- CONDITIONALLY RENDER THE FEEDBACK MESSAGE --- */}
     {feedbackMessage && (
       <p style={{ color: '#ff8a8a', marginTop: '15px', marginBottom: '-30px', fontWeight: 'bold' }}> 
-        {/* Adjusted margin, consider moving styling to CSS class */}
         {feedbackMessage}
       </p>
     )}
-    {/* --- END OF CONDITIONAL RENDERING --- */}
 
     <button
       onClick={handleStartQuiz}
-      // Apply visual cue if needed, checkBtnHighlight usage was unclear
-      className={`mainButton ${checkBtnHighlight ? "mainButtonclicked" : ""}`} 
-      // Disable button if it's currently showing "Loading..." text/icon
+      // --- REMOVED checkBtnHighlight USAGE ---
+      className="mainButton" 
       disabled={typeof buttonText !== 'string' || buttonText !== "Start the Quiz"} 
     >
       {buttonText}

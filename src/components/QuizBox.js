@@ -1,6 +1,14 @@
 import React from "react";
 import he from "he"; // Library to decode HTML entities
 
+// --- Decode function moved outside the component ---
+// This prevents the function from being recreated on every render.
+const decode = (text) => {
+  const decodedText = he.decode(text);
+  return text !== decodedText ? decodedText : text; 
+};
+// --- End of moved function ---
+
 const QuizBox = React.memo(
   ({
     id,              
@@ -13,13 +21,10 @@ const QuizBox = React.memo(
     isCompleted,     
   }) => {
 
-    const decode = (text) => {
-      const decodedText = he.decode(text);
-      return text !== decodedText ? decodedText : text; 
-    };
+    // decode function is now defined outside, no need to define it here
 
-    const cleanedQuestion = decode(question);
-    const cleanedOptions = options.map((option) => decode(option));
+    const cleanedQuestion = decode(question); // Use the outer decode function
+    const cleanedOptions = options.map((option) => decode(option)); // Use the outer decode function
 
     const getOptionClassName = (option) => {
       let baseClass = 'answer-option'; 
@@ -65,22 +70,16 @@ const QuizBox = React.memo(
              <div
                key={option}               
                onClick={() => {
-                  // Keep the correct click handler logic from previous fix
-                  // (It should call onAnswerClick only if !isCompleted)
-                  if (!isCompleted) {
-                     // console.log(`QuizBox onClick: Option="${option}", isCompleted=${isCompleted}, questionId=${id}`);
-                     onAnswerClick(id, option); 
-                  }
+                 if (!isCompleted) {
+                   onAnswerClick(id, option); 
+                 }
                }} 
                className={getOptionClassName(option)} 
              >
-               {/* --- CONTENT MODIFICATION IS HERE --- */}
-               {option} {/* Always render the option text */}
+               {option} 
                {isCompleted && option === selectedAnswer && (
-                 // Conditionally add "(Selected)" if quiz done and this option matches selected answer
                  <span className="selected-indicator"> (Selected)</span>
                )}
-               {/* --- END OF CONTENT MODIFICATION --- */}
              </div>
            ))}
          </div>

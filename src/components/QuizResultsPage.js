@@ -1,90 +1,128 @@
 import React, { useState, useEffect } from 'react';
 import Confetti from 'react-confetti'; // Make sure you have react-confetti installed
 
-// This component displays the final quiz results and action buttons.
-// It receives all necessary data and functions as props from App.js.
+// Removed constants for automatic looping confetti
+
 function QuizResultsPage({
-  score,            // The user's final score (number)
-  totalQuestions,   // Total number of questions (number)
-  categoryName,     // Name of the category (string)
-  difficultyName,   // Formatted difficulty name (string)
-  onRetry,          // Function to call for "Retry Same Questions" button
-  onNewQuestions,   // Function to call for "New [Category] Questions" button
-  onChooseNew       // Function to call for "Choose New Quiz" button
+  score,            
+  totalQuestions,   
+  categoryName,     
+  difficultyName,   
+  onRetry,          
+  onNewQuestions,   
+  onChooseNew,
+  onReviewAnswers
 }) {
 
-  // State specifically for the confetti effect on this page
-  const [showConfetti, setShowConfetti] = useState(false);
+  // --- State for button-triggered confetti ---
+  const [showCelebrateConfetti, setShowCelebrateConfetti] = useState(false);
+  const [celebrateConfettiKey, setCelebrateConfettiKey] = useState(0); // To ensure a fresh burst
+  // --- End of new confetti state ---
 
-  // Effect to trigger confetti when the results page mounts with a perfect score
-  useEffect(() => {
-    // Show confetti only if score is perfect (and totalQuestions > 0 to avoid issues)
-    if (score === totalQuestions && totalQuestions > 0) {
-      setShowConfetti(true);
-      // Optional: You could add a timer here to turn confetti off after a few seconds
-      // const timer = setTimeout(() => setShowConfetti(false), 6000); // e.g., hide after 6s
-      // return () => clearTimeout(timer); // Cleanup timer
-    } else {
-      setShowConfetti(false); // Ensure it's off if not a perfect score
-    }
-  }, [score, totalQuestions]); // Re-run effect if score or totalQuestions changes
-
-  // Determine if the score is perfect for button visibility logic
   const isPerfectScore = score === totalQuestions && totalQuestions > 0;
 
+  const scoreFeedbackMessages = {
+    0: "Oh dear! Better luck next time. Keep learning! 📚",
+    1: "You got one! A good start, keep going! 👍",
+    2: "Not bad! You're getting the hang of it! 😊",
+    3: "Well done! Over half way there! 🎉",
+    4: "Great job! So close to perfect! ✨",
+    5: "Amazing! A perfect score! You're a quiz master! 🏆🥳"
+  };
+
+  // --- NEW: useEffect FOR AUTOMATIC CONFETTI ON PERFECT SCORE ---
+  useEffect(() => {
+    // This effect runs when the component mounts or when score/totalQuestions change
+    if (isPerfectScore) {
+      // If the score is perfect when this component loads, trigger confetti once automatically
+      console.log("Perfect score detected on load! Triggering automatic confetti burst.");
+      setShowCelebrateConfetti(true);
+      setCelebrateConfettiKey(prevKey => prevKey + 1); // Use the same mechanism as the button click
+    }
+    // Dependencies ensure this runs if the score props change, calculating isPerfectScore correctly.
+  }, [isPerfectScore, score, totalQuestions]); 
+  // --- END OF NEW useEffect ---
+
+
+  const currentScoreMessage = scoreFeedbackMessages[score] || "Good effort!";
+
+  // --- Handler for the Celebrate button (remains the same) ---
+  const handleCelebrateClick = () => {
+    console.log("Celebrate button clicked!");
+    setShowCelebrateConfetti(true); // Show confetti
+    setCelebrateConfettiKey(prevKey => prevKey + 1); // Change key to ensure a fresh animation
+  };
+  // --- End of handler ---
+
   return (
-    <div className="quiz-finish-box"> {/* Use the existing CSS class */}
+    <div className="quiz-finish-box"> 
       
-      {/* Conditionally render Confetti based on local state */}
-      {showConfetti && (
+      {/* Confetti rendering logic remains the same, triggered by either auto or manual */}
+      {showCelebrateConfetti && (
         <Confetti
+          key={celebrateConfettiKey} // Use the key for re-triggering
           width={window.innerWidth}
           height={window.innerHeight}
-          numberOfPieces={300}
-          recycle={false}
+          numberOfPieces={300}     // Adjust amount as desired
+          recycle={false}          // Single burst
+          onConfettiComplete={(confettiInstance) => {
+            // Optional: confettiInstance.reset(); 
+            setShowCelebrateConfetti(false); // Hide after animation is done
+            console.log("Confetti complete, hiding.");
+          }}
           style={{ position: 'fixed', top: 0, left: 0, zIndex: 9999 }}
         />
       )}
 
       <h2>Quiz Completed!</h2>
-
-      <div className="score-reveal-container">
-          <div className="score-intro-text">Your final score is:</div>
-          <div className="score-result-value"> 
-            {score} out of {totalQuestions}
-          </div>
-          <div className="score-message">
-            {isPerfectScore ? ("Perfect score! Well done! 💯🎉") : score > totalQuestions / 2 ? ("Good job! Keep practicing!") : ("Try again to improve your score!")}
-          </div>
+      <div className="score-reveal-container"> 
+        <div className="score-intro-text">Your final score is:</div>
+        <div className="score-result-value"> 
+          {score} out of {totalQuestions}
         </div>
+        <div className="score-message">
+          {currentScoreMessage}
+        </div>
+      </div>
+
+      {/* Action Buttons After Quiz (structure preserved) */}
       <div className="quiz-finish-buttons">
-        {!isPerfectScore && ( 
+        
+        {isPerfectScore ? (
+          <button
+            className="quizOverButton celebrate-button" 
+            onClick={handleCelebrateClick}
+          >
+            🎉 Celebrate! 🎉
+          </button>
+        ) : (
           <button
             className="quizOverButton need-to-retry" 
             onClick={onRetry} 
           >
-            Retry Same Questions
+            Retry Same Questions? 
           </button>
         )}
 
-        {/* Button to get NEW questions for the SAME category/difficulty */}
         <button
-          className="quizOverButton small"
-          // Call the onNewQuestions function passed via props
-          // NO scrolling logic here
+          className="quizOverButton" 
+          onClick={onReviewAnswers}  
+        >
+          Review My Answers
+        </button>
+        
+        <button
+          className="quizOverButton small new-cat-button" 
           onClick={onNewQuestions} 
         >
-          New <span style={{ textTransform: 'capitalize' }}>{categoryName}</span> Questions ({difficultyName})
+          Change questions 
         </button>
 
-        {/* Button to go back to Landing page */}
         <button
           className="quizOverButton small"
-          // Call the onChooseNew function passed via props
-          // NO scrolling logic here
           onClick={onChooseNew} 
         >
-          Choose New Quiz
+          Start new quiz 
         </button>
       </div>
     </div>

@@ -1,30 +1,30 @@
-import React from 'react'; // Removed useState, useEffect
+import React from 'react';
 import QuizBox from './QuizBox';
-// import Confetti from 'react-confetti'; // Removed Confetti import
 
-// --- STEP 3.3: Cleaned up props ---
+// Update props destructuring
 const QuizPageMain = ({
   quizData,
   selectedAnswers,
   handleAnswerClick,
-  handleCheckAnswers, // Still needed to trigger check in App.js
-  quizCompleted,      // Needed to disable answers via QuizBox
-  selectedCategory,   // Needed for header display
-  quizType,           // Needed for header display
-  feedbackMessage     // Needed for "answer all questions" validation
+  handleCheckAnswers,
+  quizCompleted,       
+  selectedCategory,   
+  quizType,            
+  feedbackMessage,
+  // Props for review action buttons
+  score,
+  totalQuestions,
+  onRetryReview,
+  onNewQuestionsReview,
+  onChooseNewReview
 }) => {
 
-  // Removed confetti state and effect
-  // Removed local state for category/difficulty - use props directly
-
-  // Get category name safely, provide fallback
   const categoryName = selectedCategory ? selectedCategory.name : "Selected";
-  // Format difficulty nicely
   const difficultyName = quizType ? quizType.charAt(0).toUpperCase() + quizType.slice(1) : "Chosen";
+  const isPerfectScore = score === totalQuestions && totalQuestions > 0;
 
   return (
     <div>
-      {/* Display category and difficulty from props */}
       <h3 className="quiz-category-header">
         You are playing on{" "}
         <span className="game-status">{difficultyName}</span>{" "}
@@ -33,34 +33,35 @@ const QuizPageMain = ({
         category
       </h3>
 
-      {/* Render Quiz Boxes */}
+      {/* Map over quizData to render each question box */}
       {quizData.map((item, index) => (
         <QuizBox
           key={item.id} 
           id={item.id}
           questionNumber={index + 1}
           question={item.question}
-          options={[item.option1, item.option2, item.option3, item.option4]} 
+          // --- MODIFIED LINE: Pass the options array directly ---
+          options={item.options} 
+          // --- END OF MODIFICATION ---
           selectedAnswer={selectedAnswers[item.id]}
-          onAnswerClick={handleAnswerClick} // Pass down click handler
+          onAnswerClick={handleAnswerClick} 
           answer={item.answer}
-          isCompleted={quizCompleted} // Pass down completion status
+          isCompleted={quizCompleted} 
         />
       ))}
       
-      {/* Display validation feedback (e.g., "Please answer all questions") */}
-      {/* This feedback now comes from App.js when handleCheckAnswers fails */}
-      {feedbackMessage && !quizCompleted && ( // Show only if quiz not completed
+      {/* Display validation feedback if present and quiz not completed */}
+      {feedbackMessage && !quizCompleted && (
         <p style={{ color: '#ff8a8a', marginTop: '15px', marginBottom: '-30px', fontWeight: 'bold' }}>
           {feedbackMessage}
         </p>
       )}
 
-      {/* "Check Answers" Button - only shown if quiz isn't completed */}
-      {!quizCompleted && (
+      {/* --- Conditional Rendering: Show "Check Answers" OR post-review action buttons --- */}
+      {!quizCompleted && ( // If quiz is NOT completed, show "Check Answers" button
         <div>
           <button
-            onClick={handleCheckAnswers} // Call the handler passed from App
+            onClick={handleCheckAnswers}
             className="mainButton"
           >
             Check Answers
@@ -68,7 +69,40 @@ const QuizPageMain = ({
         </div>
       )}
 
-      {/* --- RESULTS SECTION ENTIRELY REMOVED --- */}
+      {quizCompleted && ( // If quiz IS completed (review mode), show the action buttons
+        <div className="quiz-actions-on-review"> 
+          <h4 className="sub-title" style={{marginTop: '40px', marginBottom: '20px'}}>Continue?</h4> 
+          <div className="quiz-finish-buttons"> 
+
+            {/* Button 1: Retry Same Questions */}
+            {!isPerfectScore && (
+              <button
+                className="quizOverButton need-to-retry"
+                onClick={onRetryReview}
+              >
+                Try again
+              </button>
+            )}
+
+            {/* Button 2: New [Category] Questions */}
+            <button
+              className="quizOverButton small"
+              onClick={onNewQuestionsReview}
+            >
+              New {categoryName} Questions 
+            </button>
+
+            {/* Button 3: New Quiz Category */}
+            <button
+              className="quizOverButton small"
+              onClick={onChooseNewReview}
+            >
+              Select new quiz category
+            </button>
+          </div>
+        </div>
+      )}
+      {/* --- END OF CONDITIONAL RENDERING --- */}
 
     </div>
   );

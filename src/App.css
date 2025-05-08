@@ -55,6 +55,7 @@ main {
 
 .sub-title {
   margin-bottom: 0px;
+  font-size: 2.3rem;
 }
 
 fieldset {
@@ -142,7 +143,7 @@ fieldset {
 
 .quizOverButton {
   border: 1px solid #333;
-  margin: 10px 0;
+  margin: 5px 0;
 }
 
 .quizOverButton:last-child {
@@ -257,7 +258,7 @@ fieldset {
 .quiz-finish-box {
   border: 1px solid #007bff;
   background-color: #262626;
-  margin: 50px 15px;
+  margin: 10px 15px;
   padding: 15px 0 5px 0;
   display: flex;
   flex-direction: column;
@@ -268,9 +269,18 @@ fieldset {
 }
 
 .quiz-finish-buttons {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
+  display: flex;             
+  flex-direction: column;   
+  gap: 1px;                 
+  align-items: center;       
+  width: 100%;              
+  max-width: 320px;         
+  margin-left: auto;        
+  margin-right: auto;       
+}
+
+.new-cat-button {
+  margin-top: 50px
 }
 
 .stop-retry {
@@ -278,7 +288,8 @@ fieldset {
 }
 
 .need-to-retry {
-  margin-bottom: 40px;
+  margin-bottom: 5px;
+  background-color: #273dbb;
 }
 
 .score-reveal {
@@ -406,6 +417,33 @@ fieldset {
   font-style: italic;
   /* e.g., color: #dddddd; */
 }
+
+/* Add this to App.css if needed */
+.quiz-actions-on-review {
+  text-align: center; /* Center the "What next?" title */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 90px;
+  background-color: rgb(14, 54, 24);
+}
+
+/* --- ADDED STYLES FOR CELEBRATE BUTTON --- */
+.celebrate-button {
+  background-color: #ce0c6d; /* Hot Pink */
+  color: white;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.celebrate-button:hover {
+  border: none;
+}
+/* --- END OF CELEBRATE BUTTON STYLES --- */
 
 @media (max-width: 480px) {
   .answer-box-options {
