@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/quizzical-app-scrimba/static/css/main.9623e899.css",
-    "main.js": "/quizzical-app-scrimba/static/js/main.9c25d169.js",
+    "main.css": "/quizzical-app-scrimba/static/css/main.fe126036.css",
+    "main.js": "/quizzical-app-scrimba/static/js/main.69759f62.js",
     "index.html": "/quizzical-app-scrimba/index.html",
-    "main.9623e899.css.map": "/quizzical-app-scrimba/static/css/main.9623e899.css.map",
-    "main.9c25d169.js.map": "/quizzical-app-scrimba/static/js/main.9c25d169.js.map"
+    "main.fe126036.css.map": "/quizzical-app-scrimba/static/css/main.fe126036.css.map",
+    "main.69759f62.js.map": "/quizzical-app-scrimba/static/js/main.69759f62.js.map"
   },
   "entrypoints": [
-    "static/css/main.9623e899.css",
-    "static/js/main.9c25d169.js"
+    "static/css/main.fe126036.css",
+    "static/js/main.69759f62.js"
   ]
 }
